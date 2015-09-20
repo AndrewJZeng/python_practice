@@ -1,5 +1,5 @@
 import requests, sys, webbrowser, bs4
-if __name__ == '__main__':
+if __name__ == '__main__':   
     print('Googling...')
     res = requests.get('http://google.com/search?q=' + ' '.join(sys.argv[1:]))
     res.raise_for_status()
