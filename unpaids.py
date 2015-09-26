@@ -17,12 +17,12 @@ for r in range(2, sheet.get_highest_row() + 1):
 smtpObj = smtplib.SMTP('smtp.mail.yahoo.com', 587)
 smtpObj.ehlo()
 smtpObj.starttls()
-smtpObj.login('matrix6202', sys.argv[1])
+smtpObj.login('**********', sys.argv[1])
 
 for name, email in unpaidMembers.items():
     body = 'Subject: %s dues unpaid. \n\nDear %s, \nRecords show that you have not paid dues for %s. Please make this payment as soon as possible.Thank you!' % (latestMonth, name, latestMonth)
     print('Sending email to %s' % email)
-    sendmailStatus = smtpObj.sendmail('matrix6202@yahoo.com', email, body)
+    sendmailStatus = smtpObj.sendmail('**********@yahoo.com', email, body)
     
     if sendmailStatus != {}:
         print('There was a problem sending email to %s: %s' % (email, sendmailStatus))

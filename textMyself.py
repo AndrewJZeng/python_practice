@@ -1,7 +1,7 @@
-accountSID = 'AC6b214198cce1c839e59f0e036a364fbb'
-authToken = '8cdbb0c1a9fcd2639cb00831f53280cb'
-myNumber = '+19789305996'
-twilioNumber = '+18329475832'
+accountSID = 'Nothing_to_see_here'
+authToken = 'Blah_blah_blah'
+myNumber = 'Are_you_still_here?'
+twilioNumber = '|='
 
 from twilio.rest import TwilioRestClient
 

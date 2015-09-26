@@ -5,7 +5,7 @@ SQUARE_FIT_SIZE = 300
 LOGO_FILENAME = 'catlogo.jpg'
 
 logoIm = Image.open(LOGO_FILENAME)
-logoIm.resize((50, 50))
+logoIm = logoIm.resize((75, 75))
 logoWidth, logoHeight = logoIm.size
 if not os.path.exists('withLogo'):
     os.makedirs('withLogo')
@@ -29,6 +29,6 @@ for filename in os.listdir('.'):
         im = im.resize((width, height))
         
     print('Adding logo to %s...' % (filename))
-    im.paste(logoIm, (width - logoWidth, height - logoHeight))
+    im.paste(logoIm, (width - logoWidth, height - logoHeight), logoIm)
     
     im.save(os.path.join('withLogo', filename))
