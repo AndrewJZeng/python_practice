@@ -1,0 +1,64 @@
+print('What do you get when you cross a snowman with a vampire?')
+input()
+print('Frostbite!')
+print()
+print('What do dentists call a astronaut\'s cavity?')
+input()
+print('A black hole!')
+print()
+print('Knock knock.')
+input()
+print("Who's there?")
+
+# -----------------------------------
+# boolean and comparison ==
+x = True
+print(x)        # what is the output?
+print(type(x))  # what is the output?
+print(x == True) # what is the output?
+print(x == False) # what is the output?
+a = 1
+print(a == 1)  # what is the output?
+a = 10
+print(a == 1)  # what is the output?
+print(a)  # what is the output?
+print(type(a))  # what is the output?
+b = '1'
+print(b)     # what is the output?
+print(type(b))   # what is the output?
+
+# conversion
+y = str(a)
+print(y)
+print(type(y))
+t = int(b)
+print(t)
+print(type(t))
+a + b
+print(a + int(b))
+print(str(a) + b)
+
+# import module
+# inequlity < <= > >=
+import random
+a = random.randint(1,10)
+print(a < 0)
+print(a >= 1)
+print(a > 10)
+print(a <= 10)
+print(a)
+
+# if statement
+x = 2
+if x == 2:
+    print('x is 2')
+else:
+    print('x is not 2')
+
+# escape characters: \\, \'. \", \n
+print("My pet doesn't like this food")
+print('My pet doesn\'t like this food')
+print("He asked: \"Is this a joke?\" ")
+print('Hello\nWorld')
+print()
+    

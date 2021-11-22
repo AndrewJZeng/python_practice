@@ -1,0 +1,35 @@
+Questions in Class 1:
+
+1. You run the code below from the editor.
+        type(5)
+        print(3.0-1)
+    What's printed?
+    A) int
+    B) 2.0
+    C) int then 2.0
+    D) nothing
+
+2. Which is allowed in Python?
+    A) x + y = 2
+    B) x*x = 2
+    C) 2 = x
+    D) xy = 2
+    E) None of the Above
+
+3. You run the code below from the file editor.
+        usa_gold = 46
+        uk_gold = 27
+        romania_gold = 1
+
+        total_gold = usa_gold + uk_gold + romania_gold
+        print(total_gold)
+
+        romania_gold += 1
+        print(total_gold)
+
+    What's printed?
+
+    A) 74 then 74
+    B) 74 then 75
+    C) 74
+    D) 75

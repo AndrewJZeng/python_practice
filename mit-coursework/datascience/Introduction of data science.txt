@@ -1,0 +1,34 @@
+Class name: Computational Thinking and Data Science
+Class limit: 10 students 
+Restrictions: High school with python object-oriented programming experience 
+Tuition: $145 
+Time: 2:30pm - 3:30pm Sunday with fall and spring semesters
+
+Description:
+
+Computational thinking is a set of problem-solving methods that involve expressing problems and their solutions in ways that a computer could also execute. It involves the mental skills and practices for designing computational models , explaining and interpreting the world as a complex way of information processing. 
+
+Data science is an inter-disciplinary field that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from structured and unstructured data. Data interpretation with data science has altered many business models and in turn changed our daily-life experiences. 
+
+The outline of this class
+
+Python review
+Optimization problem
+Graph-theoretic models
+Stochastic thinking
+Random walks
+Monte carlo Simulation
+Confidence intervals
+Sampling and standard error
+Understanding experimental data
+Introduction of machine learning
+Clustering
+Classification
+
+Bringing your laptop and curiosity to the class is required. Students with little or no programming experience are recommended to take "Making game with python" class in ACLS (http://www.acls-ma.org/culture_program/MakingGamesWithPython.html) taught by the same instructors
+
+Class Instructors: 
+
+Zhihong Zeng is a technique evangelist and the Lead Data Scientist in Iron Mountain, and has been programming various applications by using cutting-edge techniques (e.g., computer vision, natural language processing) for many years. He was a recipient of ICMI2018 10-year Technical Impact Award. His linkedin page is at https://www.linkedin.com/in/zhihong-john-zeng-13154b7/
+
+Andrew Zeng, a student in Minuteman Regional Vocational Technical High School, has an intense interest of playing video games and inventing computer games. He started programming from 7 years old, and has already explored programming with scratch, python, javascript, and C++. Andrew has made some games with python.

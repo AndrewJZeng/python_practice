@@ -1,0 +1,45 @@
+Class name: Making Games with Python
+Class limit: 15 students 
+Restrictions: Ages 10 and up
+Tuition: $145 
+Time: 3:45pm - 4:45pm
+
+Class Description:
+
+Playing video games is one of the most entertaining activities for kids, teenages, and even adults. Curiosity of how a game is created and doing it yourself (DIY) provide a fascinating learning opportunity.
+
+1) In the fall semester class, students are going to learn basics of Python (e.g., expressions, data types, variables, lists, dictionaries, flow control, functions and class) and explore python games by writing/debugging/playing small text-based games. The list of games include but are not limited to:
+
+Guess the number
+Jokes
+Dragon Realm
+Hangman
+Tic Tac Toe
+Bagels
+Reversi ...
+
+2) In the spring semester class, students are going to make graphical games with the Pygame framework. They will learn some advanced programming skills, such as drawing, event handling, game windows and camera views. The list of games include:
+
+Boucing Ball
+Memory puzzle
+Wormy game which evolves from a simple game to a complex game, i.e.,
+    a) single-apple single-worm
+    b) multiple-apples single-worm 
+    c) multiple-apple single-worm with unbounded world
+    d) multiple-apple multiple-worm with unbounded world
+
+The most valuable things that the students will learn are logic thinking and problem solving skills by: 
+    a) building a base game with classes, functions and modules
+    b) increasing the complexity step by step
+    c) continuously testing 
+
+
+Basic knowledge of computer and programming (e.g., Scratch) will be helpful but not necessary. Bringing your laptop and curiosity to the class is required. 
+
+Class Instructors: 
+
+Zhihong Zeng is a technique evangelist and the Lead Data Scientist in Iron Mountain, and has been programming various applications by using cutting-edge techniques (e.g., computer vision, natural language processing) for many years. He was a recipient of ICMI2018 10-year Technical Impact Award. His linkedin page is at https://www.linkedin.com/in/zhihong-john-zeng-13154b7/
+
+Andrew Zeng, a student in Minuteman Regional Vocational Technical High School, has an intense interest of playing video games and inventing computer games. He started programming from 7 years old, and has already explored programming with scratch, python, javascript, and C++. Andrew has made some games with python.
+
+They are also the instructors in "Computational thinking and data science" class in ACLS
