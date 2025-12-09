@@ -1,0 +1,440 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include "stb_image.h"
+#include "shader_s.h"
+
+#include <iostream>
+#include <cmath>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+void drawOnBuffer();
+
+//draw funcs
+void drawPoint(unsigned int p1[], unsigned int color[]);
+void drawLine(unsigned int p1[], unsigned int p2[], unsigned int color[]);
+void drawCurve(unsigned int p1[], unsigned int p2[], unsigned int p3[], unsigned int p4[], unsigned int color[]);
+void drawCircle(unsigned int p1[], unsigned int radius, unsigned int color[]);
+
+
+// settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+int dimx = 256;
+int dimy = 256;
+unsigned char imageBuff[256][256][4];
+
+int main()
+{
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+    
+    //enable depth buffer
+    glEnable(GL_DEPTH_TEST);
+
+    // build and compile our shader zprogram
+    // ------------------------------------
+    Shader ourShader("/Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/3.3.shader.vs", "/Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/3.3.shader.fs");
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    };
+    
+//    unsigned int indices[] = {
+//        0, 1, 3, // first triangle
+//        1, 2, 3  // second triangle
+//    };
+    unsigned int VBO, VAO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+//    unsigned int EBO;
+//    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+//    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+//    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    // load and create a texture
+    // -------------------------
+    unsigned int texture1, texture2;
+    // texture 1
+    // ---------
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+     // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    drawOnBuffer();
+    //instead of loading image, load array
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const void*)imageBuff);
+    
+
+    // texture 2
+    // ---------
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("/Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/awesomeface.png", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+    // -------------------------------------------------------------------------------------------
+    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    // either set it manually like so:
+    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+    // or set it via the texture class
+    ourShader.setInt("texture2", 1);
+
+
+
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window))
+    {
+        // input
+        // -----
+        processInput(window);
+
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear color and depth buffer every frame
+
+        // bind textures on corresponding texture units
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
+        
+        //activate shader
+        ourShader.use();
+        
+        //create transformation matrices
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f); //initialize as identity matrix
+        
+        //set up transformations
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f)); //for worldspace, rotate plane back 50 degrees + time in some arbitrary axis
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); //for camera view, move plane back 3 steps in z direction to give impression of camera move away
+        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f); //create perspective matrix with 45 deg fov, aspect ratio width/height, with front plane 0.1f near and 100f far clipping planes
+        
+        //send transformations to shader
+        ourShader.setMat4fv("model", model);
+        ourShader.setMat4fv("view", view);
+        ourShader.setMat4fv("projection", projection);
+        
+        //render container
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+//    glDeleteBuffers(1, &EBO);
+
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
+    glfwTerminate();
+    return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
+void reassignPoint(unsigned int* point, unsigned int x, unsigned int y) {
+    point[0] = x;
+    point[1] = y;
+}
+
+void reassignColor(unsigned int* color, unsigned int r, unsigned int g, unsigned int b) {
+    color[0] = r;
+    color[1] = g;
+    color[2] = b;
+}
+
+void drawOnBuffer() {
+    unsigned int p1[2];
+    unsigned int p2[2];
+    unsigned int p3[2];
+    unsigned int p4[2];
+    unsigned int color[3];
+    
+    reassignPoint(p1, 0, 0);
+    reassignPoint(p2, 255, 255);
+    reassignColor(color, 255, 0, 0);
+    drawLine(p1, p2, color);
+    
+    reassignPoint(p1, 0, 255);
+    reassignPoint(p2, 255, 0);
+    reassignColor(color, 0, 0, 255);
+    drawLine(p1, p2, color);
+    
+    reassignPoint(p1, 127, 127);
+    reassignColor(color, 255, 255, 255);
+    drawCircle(p1, 64, color);
+    
+    reassignPoint(p1, 25, 120);
+    reassignPoint(p2, 80, 25);
+    reassignPoint(p3, 120, 25);
+    reassignPoint(p4, 160, 160);
+    reassignColor(color, 0, 255, 0);
+    drawCurve(p1, p2, p3, p4, color);
+}
+
+void drawPoint(unsigned int p1[], unsigned int color[]) {
+    imageBuff[p1[0]][p1[1]][0] = color[0];
+    imageBuff[p1[0]][p1[1]][1] = color[1];
+    imageBuff[p1[0]][p1[1]][2] = color[2];
+}
+
+void drawLine(unsigned int p1[], unsigned int p2[], unsigned int color[]) {
+    int dx = (int)p2[0] - (int)p1[0];
+    int dy = (int)p2[1] - (int)p1[1];
+
+    dx = abs(dx);
+    dy = abs(dy);
+
+    int x = p1[0];
+    int y = p1[1];
+    
+    int x0 = p1[0];
+    int y0 = p1[1];
+    int x1 = p2[0];
+    int y1 = p2[1];
+
+    int px = dx * 2;
+    int py = dy * 2;
+
+    int xInc = x1 > x0 ? 1 : -1;
+    int yInc = y1 > y0 ? 1 : -1;
+
+    drawPoint(p2, color);
+
+    unsigned int point[2];
+    if (dx > dy) { // is run greater than rise ?  (x changes faster than y), so walk along x
+        int accum = -dx;  // unlike many versions, we draw the first pixel in the loop
+        for (x = x0; x != x1; x += xInc) // x is already set to x0, but I kept it here to be clear
+        {
+            point[0] = x;
+            point[1] = y;
+            drawPoint(point, color);
+            accum += py;  // accum += dy*2;
+            if (accum > 0) // has the accumulator crossed zero?
+            {
+                accum -= px;  // accum -= dx*2;
+                y += yInc;
+            }
+        }
+    }
+    else { //  OK rise must be greater than run, walk up/down y
+        int accum = -dy; // we draw the first pixel in the loop
+        for (y = y0; y != y1; y += yInc)  // y is already set to y0, but I kept it here to be clear
+        {
+            point[0] = x;
+            point[1] = y;
+            drawPoint(point, color);
+            accum += px; // accum += dx*2;
+            if (accum > 0) // has the accumulator crossed zero?
+            {
+                accum -= py;  // accum -= dy*2;
+                x += xInc;
+            }
+        }
+    }
+}
+
+void drawCurve(unsigned int p1[], unsigned int p2[], unsigned int p3[], unsigned int p4[], unsigned int color[]) {
+    unsigned int x = p1[0];
+    unsigned int y = p1[1];
+    unsigned int lastX = x;
+    unsigned int lastY = y;
+    float t = 0.0f;
+    
+    unsigned int point1[2];
+    unsigned int point2[2];
+    
+    while (t <= 1.0f) {
+        x = pow(1.0f - t, 3) * p1[0] + pow(1.0f - t, 2) * 3 * t * p2[0] + (1.0f - t) * 3 * t * t * p3[0] + pow(t, 3) * p4[0];
+        y = pow(1.0f - t, 3) * p1[1] + pow(1.0f - t, 2) * 3 * t * p2[1] + (1.0f - t) * 3 * t * t * p3[1] + pow(t, 3) * p4[1];
+        
+        reassignPoint(point1, x, y);
+        reassignPoint(point2, lastX, lastY);
+
+        if (t != 0.0f) {
+            drawLine(point1, point2, color);
+        }
+        
+        lastX = x;
+        lastY = y;
+        
+        t += 0.125f;
+    }
+}
+
+void drawPointXY(unsigned int x, unsigned int y, unsigned int color[]) {
+    unsigned int point[] = {x, y};
+    drawPoint(point, color);
+}
+
+void drawCircle(unsigned int p1[], unsigned int radius, unsigned int color[]) {
+    int x = 0;
+    int y = -1 * (int) radius;
+    int p = y;
+    
+    int centerX = (int)p1[0];
+    int centerY = (int)p1[1];
+    
+    //draw 1/8 of circle
+    while (x < -y) {
+        if (p > 0) {
+            y++;
+            p += 2 * (x + y) + 1;
+        } else {
+            p += 2 * x + 1;
+        }
+        
+        drawPointXY(centerX + x, centerY + y, color);
+        drawPointXY(centerX - x, centerY + y, color);
+        drawPointXY(centerX + x, centerY - y, color);
+        drawPointXY(centerX - x, centerY - y, color);
+        drawPointXY(centerX + y, centerY + x, color);
+        drawPointXY(centerX - y, centerY + x, color);
+        drawPointXY(centerX + y, centerY - x, color);
+        drawPointXY(centerX - y, centerY - x, color);
+        
+        x++;
+    }
+}

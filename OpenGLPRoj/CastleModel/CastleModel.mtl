@@ -1,0 +1,152 @@
+# Blender 3.6.2 MTL File: 'None'
+# www.blender.org
+
+newmtl Shape.423
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/36B9F48_c.png
+
+newmtl Shape.424
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/2BC808F1_c.png
+
+newmtl Shape.425
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/19D5421D_c.png
+
+newmtl Shape.426
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/18179BF3_c.png
+
+newmtl Shape.427
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/154B175A_c.png
+
+newmtl Shape.428
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/3AB7B2BC_c.png
+
+newmtl Shape.429
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/60A64656_c.png
+
+newmtl Shape.430
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/3EE6347B_c.png
+
+newmtl Shape.431
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/31BEEA74_c.png
+
+newmtl Shape.432
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/1916F8C5_c.png
+
+newmtl Shape.433
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/49254A53_c.png
+
+newmtl Shape.434
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/20EF7F7C_c.png
+
+newmtl Shape.435
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Shape.462
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/1FEE462_c.png
+map_d /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/1FEE462_c.png
+
+newmtl Shape.473
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd /Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/Castle Courtyard/6DAF90F6_c.png

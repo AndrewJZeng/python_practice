@@ -1,0 +1,303 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include "stb_image.h"
+#include "shader_gui.h"
+
+#include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+
+// settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+int dimx = 256;
+int dimy = 256;
+unsigned char imageBuff[256][256][4];
+
+const char *vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "uniform vec3 VertColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(VertColor, 1.0f);\n"
+    "}\n\0";
+
+static char *vtext = new char[2048];
+static char *ftext = new char[2048];
+
+void checkerBoard() {
+    for (int i = 0; i < dimx; i++) {
+        for (int j = 0; j < dimy; j++) {
+            if (((i / 16) % 2) == 0) {
+                if (((j / 16) % 2) == 0) {
+                    imageBuff[i][j][0] = imageBuff[i][j][1] = imageBuff[i][j][2] = 255;
+                }
+            } else {
+                if (((j / 16) % 2) == 1)
+                    imageBuff[i][j][0] = imageBuff[i][j][1] = imageBuff[i][j][2] = 255;
+            }
+        }
+    }
+}
+
+void drawIMGUI(Shader* ourShader) {
+    // Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+    {
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+//        static float f = 0.0f;
+
+        ImGui::Begin("Graphics For Games");  // Create a window and append into it.
+
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        
+//        bool offScreen;
+//        ImGui::Checkbox("Use Offscreen Buffer", &offScreen);
+
+        static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
+        ImGui::InputTextMultiline("Vertex Shader", vtext, 2048, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), flags);
+        ImGui::InputTextMultiline("Fragment Shader", ftext, 2048, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), flags);
+
+        if (ImGui::Button("Use Shaders", ImVec2(100, 20)))
+            ourShader->reload(vtext, ftext);
+        
+        /*
+
+        ImGui::SameLine(115);
+
+        if (ImGui::Button("Save Shaders", ImVec2(120, 20)))
+        {
+            saveShaders();
+        }
+
+        ImGui::SameLine(240);
+
+        if (ImGui::Button("Swap Texture", ImVec2(100, 20)))
+            nTexture ^= 1;
+
+        ImGui::InputFloat4("one", myMatrix[0]);
+        ImGui::InputFloat4("two", myMatrix[1]);
+        ImGui::InputFloat4("three", myMatrix[2]);
+        ImGui::InputFloat4("four", myMatrix[3]);
+        */
+
+//        ImGui::Image((void*)(intptr_t) texture1, ImVec2(512, 512));
+        //ImGui::Image((void*)(intptr_t)-1, ImVec2(512, 512));
+
+        ImGui::End();
+
+        // IMGUI Rendering
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+}
+
+int main()
+{
+    const char* glsl_version = "#version 150";
+    
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+    // glfw window creation
+    // --------------------
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // glad: load all OpenGL function pointers
+    // ---------------------------------------
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+    
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
+    // build and compile our shader zprogram
+    // ------------------------------------
+    Shader ourShader(vertexShaderSource, fragmentShaderSource);
+
+    //vertex data for triangles
+//    float vertices[] = {
+//        // positions          // texture coords
+//        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, // left
+//        0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // right
+//        0.0f,  0.5f, 0.0f,   0.5f, 1.0f // top
+//    };
+    
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+        // positions          // texture coords
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right
+         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // bottom left
+        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // top left
+    };
+    unsigned int indices[] = {
+        0, 1, 3, // first triangle
+        1, 2, 3  // second triangle
+    };
+    unsigned int VBO, VAO;
+    unsigned int EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // texture coord attribute
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    // load and create a texture
+    // -------------------------
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+//    int width, height, nrChannels;
+//    unsigned char *data = stbi_load("/Users/andrewzeng/dev/OpenGLStuff/OpenGLPRoj/OpenGLPRoj/wall.jpg", &width, &height, &nrChannels, 0);
+//    if (data)
+//    {
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+//        glGenerateMipmap(GL_TEXTURE_2D);
+//    }
+//    else
+//    {
+//        std::cout << "Failed to load texture" << std::endl;
+//    }
+    
+    //instead of loading image, load array
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const void*)imageBuff);
+    checkerBoard();
+    
+    glGenerateMipmap(GL_TEXTURE_2D);
+    
+//    stbi_image_free(data);
+
+
+
+    // render loop
+    // -----------
+    while (!glfwWindowShouldClose(window))
+    {
+        // input
+        // -----
+        processInput(window);
+
+        // render
+        // ------
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // bind Texture
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        // render container
+        ourShader.use();
+        
+        //set color uniform
+        ourShader.setVec3fv("VertColor", glm::vec3(1.0f, 0.0f, 0.0f));
+        
+        glBindVertexArray(VAO);
+//        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        
+        //draw imgui window on top of everything
+        drawIMGUI(&ourShader);
+
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+//    glDeleteBuffers(1, &EBO);
+
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
+    glfwTerminate();
+    return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    // make sure the viewport matches the new window dimensions; note that width and
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+}
+
+
